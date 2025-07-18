@@ -33,4 +33,9 @@ It turns out that you can have multiple instances of a container network from th
 
 Given how little resources I allocated to the VM, it makes sense that I was unable to deploy the lab. Fortuantely, since the lab was already up there wasn't much to fix. Anyways, running multiple container networks could be interesting to play with in the future once I have a better understanding of containerlabs.
 
+## 2nd Error
+In my attempt to ssh into Spine1 to start configuartions I was unfortanetly met with this error message:
+
+<img width="837" height="409" alt="image" src="https://github.com/user-attachments/assets/92231de6-1189-4c76-b607-69917fefb094" />
+
 ## SRLinux Configuration
