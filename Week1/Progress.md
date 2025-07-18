@@ -3,11 +3,7 @@
 Started following a video on setting up containerlab. Before watching through it, I configured a KVM running Ubuntu Server 24.04.2. Immediately upon start up I ran `sudo apt update` and `sudo apt upgrade`. Next, I installed the packages necessary for running containerlab. Fortunately both the video and containerlab's website provide a command to install it all: `curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"`
 
 ## Creating the Topology
-First created a new directory called "clab-labs"
-
-Then cd into ~/clab-labs"
-
-Finally created the topology file:
+First I created a new directory called `clab-labs` then cd into `~/clab-labs`. Afterwards I created another directory named `clab-lab1srl` which is nested inside `clab-labs`. My thought process behind that is that each subdirectory under `clab-labs` will represent different containerlab projects. Regardless, after creating the subdirectory I created the topology file: `lab1.clab.yaml`. The `.clab.yaml` extension makes a file a topolgy file. Finally, I configured the topology file.
 
 ```
 topolgy:
@@ -21,5 +17,8 @@ topolgy:
     leaf2:
       kind: nokia_srlinux
       image: ghcr.io/nokia/srlinux
+links:
+  - endpoints: ["spine1: e1-1", "leaf1: e1-1"]
+  - endpoints: ["spine1: e1-2", "leaf2: e1-1"]
 ```
 ### Topology File Breakdown
