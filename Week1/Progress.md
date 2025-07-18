@@ -22,3 +22,7 @@ links:
   - endpoints: ["spine1: e1-2", "leaf2: e1-1"]
 ```
 ### Topology File Breakdown
+
+## 1st Error
+<img width="956" height="113" alt="image" src="https://github.com/user-attachments/assets/0701e7c8-9190-47e8-a425-db99f2b36654" />
+
