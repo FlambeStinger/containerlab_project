@@ -38,4 +38,7 @@ In my attempt to ssh into Spine1 to start configuartions I was unfortanetly met 
 
 <img width="837" height="409" alt="image" src="https://github.com/user-attachments/assets/92231de6-1189-4c76-b607-69917fefb094" />
 
+<img width="778" height="173" alt="image" src="https://github.com/user-attachments/assets/dd8b4a3a-02a1-4ba6-be92-841b4a47e060" />
+
+
 ## SRLinux Configuration
