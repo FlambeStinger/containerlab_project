@@ -34,11 +34,18 @@ It turns out that you can have multiple instances of a container network from th
 Given how little resources I allocated to the VM, it makes sense that I was unable to deploy the lab. Fortuantely, since the lab was already up there wasn't much to fix. Anyways, running multiple container networks could be interesting to play with in the future once I have a better understanding of containerlabs.
 
 ## 2nd Error
-In my attempt to ssh into Spine1 to start configuartions I was unfortanetly met with this error message:
+In my attempt to ssh into `spine1` to start configuartions, I was unfortanetly met with this error message:
 
 <img width="837" height="409" alt="image" src="https://github.com/user-attachments/assets/92231de6-1189-4c76-b607-69917fefb094" />
 
-<img width="778" height="173" alt="image" src="https://github.com/user-attachments/assets/dd8b4a3a-02a1-4ba6-be92-841b4a47e060" />
+Thinking that it would be an easy fix, I redeployed my lab using `sudo clab redeploy -t lab1.clab.yaml`. I attempted to ping `spine1` after the redeployment but that didn't do anything. 
 
+<img width="615" height="358" alt="image" src="https://github.com/user-attachments/assets/14780d28-3518-4724-8f4f-a55b54950fdb" />
+
+Obviously the problem is a networking problem, so I decided to take a look at my interfaces.
+
+<img width="772" height="312" alt="image" src="https://github.com/user-attachments/assets/c504e6dc-d9af-4106-9663-e2d7815f8513" />
+
+When looking through the outputs of `ip -br add show && ip -br link show` I noticed that both the `docker0` and the `br-738c2b1c6465` interfaces are DOWN. Also, I find it interseting that there are two bridge interfaces with the same IP address. I'm going to create the same containerlab on a new VM and compare the network configurations between the two VMs.
 
 ## SRLinux Configuration
