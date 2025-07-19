@@ -46,6 +46,15 @@ Obviously the problem is a networking problem, so I decided to take a look at my
 
 <img width="772" height="312" alt="image" src="https://github.com/user-attachments/assets/c504e6dc-d9af-4106-9663-e2d7815f8513" />
 
-When looking through the outputs of `ip -br add show && ip -br link show` I noticed that both the `docker0` and the `br-738c2b1c6465` interfaces are DOWN. Also, I find it interseting that there are two bridge interfaces with the same IP address. I'm going to create the same containerlab on a new VM and compare the network configurations between the two VMs.
+When looking through the outputs of `ip -br add show && ip -br link show` I noticed that both the `docker0` and the `br-738c2b1c6465` interfaces are DOWN. Also, I find it interesting that there are two bridge interfaces with the same IP address. I'm going to create the same containerlab on a new VM and compare the network configurations between the two VMs.
+
+<img width="755" height="275" alt="image" src="https://github.com/user-attachments/assets/8c921140-cffa-4cd4-8814-7e2e1f936e1e" />
+
+The above image is the network configuration from the new VM. For the most part everything looks about the same when compared to the original. However, the new VM doesn't have duplicate interfaces for the 172.20.20.0/24 network. I speculate that the duplicate interfaces might be the cause of the problem as without it I'm able to ping and SSH into my devices.
+
+<img width="774" height="336" alt="image" src="https://github.com/user-attachments/assets/e63d24fb-1747-431a-9560-af2bdcd91261" />
+
+My theory was right! After deleting the duplicate bridge interface I was able to ping and SSH into my devices! 
+
 
 ## SRLinux Configuration
