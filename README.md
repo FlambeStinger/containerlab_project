@@ -34,5 +34,6 @@ Following SR Linux's Lab, the lab will be a simple spine and leaf topology. All 
 - Containerlab - running networking labs with Docker UX: https://www.youtube.com/watch?v=qigCla1qY3k
 - Containerlab: https://containerlab.dev/
 - SR Linux Lab: https://learn.srlinux.dev/get-started/lab/
+- SR Linux VLANs: https://learn.srlinux.dev/blog/2024/vlans-on-sr-linux/
 - Exploring the Linux ‘ip’ Command: https://blogs.cisco.com/learning/exploring-the-linux-ip-command
 - RedHat: https://access.redhat.com/sites/default/files/attachments/rh_ip_command_cheatsheet_1214_jcs_print.pdf
