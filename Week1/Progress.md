@@ -63,5 +63,22 @@ For my first lab working with SRLinux I'm planning to create two VLANs (VLAN 10 
 
 <img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
 
+### Adding Clients
+
+
 ### Configuring VLANs
 
+```
+enter candidate (Brings us to candidate mode; where configurations occur)
+interface ethernet-1/1 (The interface we want to configure)
+admin-state enable (this enables the interface))
+subinterface 10 (creates a subinterface ending in .10)
+type brideged (sets the link to be a bridge)
+admin-state enable (enables the .10 subinterface)
+exit all (returns to root)
+
+network-instance layer-2 (this creates a vrf named layer-2)
+type mac-vrf (this sets the vrf to behave like a switch)
+admin-state enabled (this enables the instance)
+interface ethernet-1/1.10 (Adds the ethernet-1/1.10 interface to this vrf instance)
+```
