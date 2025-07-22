@@ -59,4 +59,9 @@ My theory was right! After deleting the duplicate bridge interface I was able to
 
 ## SRLinux Configuration
 
-For my first lab working with SRLinux I'm planning to create two VLANs (VLAN 10 and 20), place their endhosts on their respective VLANs, and setup two trunk links between the leaves and spine switches. Also I will attempt to configure intervlan routing on `spine1`.
+For my first lab working with SRLinux I'm planning to create two VLANs (VLAN 10 and 20), place their endhosts on their respective VLANs, setup two trunk links between the leaves and spine switches, and configure `spine` to route between the two VLANs. Attached below is the topology detailing IP and VLAN assignment.
+
+<img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
+
+### Configuring VLANs
+
