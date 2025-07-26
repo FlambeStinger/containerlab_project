@@ -1,0 +1,30 @@
+enter candidate
+interface ethernet-1/2
+admin-state enable
+vlan-tagging true
+subinterface 11
+admin-state enable
+type bridged
+vlan encap untagged 
+exit all
+
+interface ethernet-1/1
+admin-state enable
+vlan-tagging true
+subinterface 11 
+admin-state enable
+type bridged
+vlan encap single-tagged-range lower-vlan-id 10 high-vlan-id 11
+
+network-instance layer-2
+admin-state enable
+type mac-vrf
+interface ethernet-1/1.11
+exit
+interface ethernet-1/2.11
+exit all
+commit stay
+commit save
+
+
+
