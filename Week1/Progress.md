@@ -101,7 +101,7 @@ name: lab1srl
     - endpoints: ["leaf2: e1-2", "client2: e1-1"]
 ```
 
-### Configuring VLANs
+### Configuring Layer2 Interfaces
 
 ```
 enter candidate (Brings us to candidate mode; where configurations occur)
@@ -117,3 +117,5 @@ type mac-vrf (this sets the vrf to behave like a switch)
 admin-state enabled (this enables the instance)
 interface ethernet-1/1.10 (Adds the ethernet-1/1.10 interface to this vrf instance)
 ```
+
+### Configuring and Applying VLANs 
