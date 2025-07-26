@@ -6,23 +6,30 @@ Started following a video on setting up containerlab. Before watching through it
 First I created a new directory called `clab-labs` then cd into `~/clab-labs`. Afterwards I created another directory named `clab-lab1srl` which is nested inside `clab-labs`. My thought process behind that is that each subdirectory under `clab-labs` will represent different containerlab projects. Regardless, after creating the subdirectory I created the topology file: `lab1.clab.yaml`. The `.clab.yaml` extension makes a file a topolgy file. Finally, I configured the topology file.
 
 ```
-topolgy:
-  nodes:
-    spine1:
-      kind: nokia_srlinux
-      image: ghcr.io/nokia/srlinux
-    leaf1:
-      kind: nokia_srlinux
-      image: ghcr.io/nokia/srlinux
-    leaf2:
-      kind: nokia_srlinux
-      image: ghcr.io/nokia/srlinux
-links:
-  - endpoints: ["spine1: e1-1", "leaf1: e1-1"]
-  - endpoints: ["spine1: e1-2", "leaf2: e1-1"]
+name: lab1srl
+
+  topolgy:
+    nodes:
+      spine1:
+        kind: nokia_srlinux
+        image: ghcr.io/nokia/srlinux
+      leaf1:
+        kind: nokia_srlinux
+        image: ghcr.io/nokia/srlinux
+      leaf2:
+        kind: nokia_srlinux
+        image: ghcr.io/nokia/srlinux
+  links:
+    - endpoints: ["spine1: e1-1", "leaf1: e1-1"]
+    - endpoints: ["spine1: e1-2", "leaf2: e1-1"]
 ```
 ### Topology File Breakdown
-
+- **Name** : Defines the name of the topology 
+- **Topology** : Defines topology configurations
+- **Nodes** : Defines node configuartions
+- **Kind** : Defines the type of NOS/OS clab can expect
+- **Image** : Defines the container image that will be pulled and used
+- **Endpoints** : Defines how nodes will be connected
 
 ## 1st Error
 <img width="956" height="113" alt="image" src="https://github.com/user-attachments/assets/0701e7c8-9190-47e8-a425-db99f2b36654" />
@@ -65,6 +72,34 @@ For my first lab working with SRLinux I'm planning to create two VLANs (VLAN 10 
 
 ### Adding Clients
 
+Before I start configuring the network, I need to add the client devices that I forgot to add when defining the topology. Similar to adding the SRLinux devices, I created and defined the connection, image, and kind for the two nodes `client1` and `client2`. My topology file ended up looking like this after I completed adding the clients.
+
+```
+name: lab1srl
+
+  topolgy:
+    nodes:
+      spine1:
+        kind: nokia_srlinux
+        image: ghcr.io/nokia/srlinux
+      leaf1:
+        kind: nokia_srlinux
+        image: ghcr.io/nokia/srlinux
+      leaf2:
+        kind: nokia_srlinux
+        image: ghcr.io/nokia/srlinux
+      client1:
+        kind: linux
+        image: alpine
+      client2:
+        kind: linux
+        image: alpine 
+  links:
+    - endpoints: ["spine1: e1-1", "leaf1: e1-1"]
+    - endpoints: ["spine1: e1-2", "leaf2: e1-1"]
+    - endpoints: ["leaf1: e1-2", "client1: e1-1"]
+    - endpoints: ["leaf2: e1-2", "client2: e1-1"]
+```
 
 ### Configuring VLANs
 
