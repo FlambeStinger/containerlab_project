@@ -7,3 +7,25 @@ For a few days I've been struggling with getting the clients to successful commu
 <img width="286" height="317" alt="image" src="https://github.com/user-attachments/assets/ef90c9f8-4c9b-4871-a4a9-c1042c5f251f" />
 
 ## Topology Setup
+```
+name: small_lab
+
+topology:
+  nodes:
+    leaf1:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux
+    client1:
+      kind: linux
+      image: alpine
+    client2:
+      kind: linux
+      image: alpine
+  links:
+    - endpoints: ["leaf1: e1-1", "client1: e1-1"]
+    - endpoints: ["leaf1: e1-2", "client2: e1-1"]
+```
+## Setting Static IPs for Clients
+
+## Configuring Leaf1
+
