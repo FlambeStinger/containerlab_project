@@ -37,12 +37,36 @@ Before configuring the Leaf1 node, I'll set the IP addresses for the `client1` a
 The terminal should look like this after executing the command:
 <img width="300" height="21" alt="image" src="https://github.com/user-attachments/assets/5f35edc4-cd09-4ea8-9dd5-c3ca7e8f9f0b" />
 
-Now to configure the IP address I need to know the name of the interface that I called `e-1/1` in my topology. To do this, I ran `ip add` which displayed the IP addresses of all my interfaces. Unfortanetly, I don't see an interface named `e-1/1`, but I can make the assumption that `clab-69359b45` is the `e-1/1` interface given that it has no IP address and that it's named clab. To set the IP address, I ran `ip addr add 172.16.16.12/24 dev clab-69359b45`. Finally, I ran `ip add` to verify that the interface was succesfully configured. 
+Now to configure the IP address I need to know the name of the interface that I called `e-1/1` in my topology. To do this, I ran `ip add` which displayed the IP addresses of all my interfaces. It turned out that the clients also labeled the interfaces as `e-1/1`. To set the IP address, I ran `ip addr add 172.16.16.12/24 dev clab-69359b45`. Finally, I ran `ip add` to verify that the interface was succesfully configured. 
 
-<img width="781" height="338" alt="image" src="https://github.com/user-attachments/assets/32f3f337-7d89-4275-887c-0355db936b13" />
-
-<img width="773" height="302" alt="image" src="https://github.com/user-attachments/assets/6e223566-d27c-4339-b527-fc4836be26c0" />
-
+<img width="722" height="312" alt="image" src="https://github.com/user-attachments/assets/a34777a3-5ee7-4e03-9549-b29d3d573697" />
 
 ## Configuring Leaf1
+To configure `leaf1` I SSHed and logged-in using the default credentials. Next I entered the configuration mode (called candidate)
 
+```
+enter candidate
+interface ethernet-1/1
+admin-state enable
+subinterface 0
+admin-state enable
+type bridged
+exit all
+
+interface ethernet-1/2
+admin-state enable
+subinterface 0
+admin-state enable
+type bridged
+exit all
+
+network-instance layer2
+admin-state enable
+type mac-vrf
+interface ethernet-1/1.0
+exit
+interface ethernet-1.2.0
+exit all
+commit stay
+commit save
+```
