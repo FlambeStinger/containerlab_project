@@ -1,0 +1,16 @@
+name: small_lab
+
+topology:
+  nodes:
+    leaf1:
+      kind: nokia_srlinux
+      image: ghcr.io/nokia/srlinux
+    client1:
+      kind: linux
+      image: alpine
+    client2:
+      kind: linux
+      image: alpine
+  links:
+    - endpoints: ["leaf1: e1-1", "client1: e1-1"]
+    - endpoints: ["leaf1: e1-2", "client2: e1-1"]
