@@ -88,55 +88,72 @@ Note to self, whenever you redeploy your container lab all of your devices are e
 ## Reconfiguring Leaf1
 
 ```
-enter candidate
-interface ethernet-1/{1..3} (Allows me to configure a range of interfaces)
+enter candidate 
+interface ethernet-1/{1..3}
 admin-state enable
 vlan-tagging true
-exit all
+exit
 
 interface ethernet-1/1
 subinterface 16
 type bridged
-vlan encap untagged 
-exit to interface
-subinterface 0
-type bridged
-vlan encap single-tagged vlan-id 16
+vlan encap untagged
 exit all
 
 interface ethernet-1/{2..3}
-subinterface 17 
+subinterface 17
 type bridged
-vlan encap untagged
-exit to interface
-subinterface 0 
-type bridged
-vlan encap single-tagged vlan-id 17
+vlan encap untaged
+exit all
 
-network-instance bridge-1
-type mac-vrf
+network-instance VLAN16
 admin-state enable
+type mac-vrf
 interface ethernet-1/1.16
-exit
+exit all
+
+network-instance VLAN17
+admin-state enable
+type mac-vrf
+br
 interface ethernet-1/2.17
 exit
 interface ethernet-1/3.17
 exit all
 
 commit stay
-commit save
+commit save 
 
-interface ibr1
+interface ibr0
 admin-state enable
-subinterface 1
+subinterface 16
 admin-state enable
 ipv4
 admin-state enable
+address 172.16.16.1/24
+exit to interface
+subinterface 17
+admin-state enable
+ipv4
 address 172.16.17.1/24
 exit all
 
+
 network-instance default
-interface irb0.0
+admin-state enable
+type ip-vrf
+interface irb0.16
 exit
-interface irb1.1
+interface irb0.16
+exit all
+
+enter candidate 
+network-instance VLAN17
+interface irb0.17
+exit
+
+network-instance VLAN16
+interface irb0.16
+exit
+commit save 
 ```
