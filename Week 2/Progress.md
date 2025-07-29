@@ -103,7 +103,7 @@ exit all
 interface ethernet-1/{2..3}
 subinterface 17
 type bridged
-vlan encap untaged
+vlan encap untagged
 exit all
 
 network-instance VLAN16
@@ -115,7 +115,6 @@ exit all
 network-instance VLAN17
 admin-state enable
 type mac-vrf
-br
 interface ethernet-1/2.17
 exit
 interface ethernet-1/3.17
@@ -124,7 +123,7 @@ exit all
 commit stay
 commit save 
 
-interface ibr0
+interface irb0
 admin-state enable
 subinterface 16
 admin-state enable
@@ -138,13 +137,13 @@ ipv4
 address 172.16.17.1/24
 exit all
 
-
 network-instance default
 admin-state enable
+router-id 10.10.10.1
 type ip-vrf
 interface irb0.16
 exit
-interface irb0.16
+interface irb0.17
 exit all
 
 enter candidate 
@@ -154,6 +153,17 @@ exit
 
 network-instance VLAN16
 interface irb0.16
-exit
+exit all
+
+interface lo0
+admin-state enable
+subinterface 0
+admin-state enable
+ipv4
+address 10.10.10.1/32
+exit all
+
 commit save 
+
+
 ```
