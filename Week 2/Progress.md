@@ -86,3 +86,57 @@ Note to self, whenever you redeploy your container lab all of your devices are e
 <img width="706" height="550" alt="image" src="https://github.com/user-attachments/assets/a3cf0dae-15c0-4c50-8eea-534b93c3899f" />
 
 ## Reconfiguring Leaf1
+
+```
+enter candidate
+interface ethernet-1/{1..3} (Allows me to configure a range of interfaces)
+admin-state enable
+vlan-tagging true
+exit all
+
+interface ethernet-1/1
+subinterface 16
+type bridged
+vlan encap untagged 
+exit to interface
+subinterface 0
+type bridged
+vlan encap single-tagged vlan-id 16
+exit all
+
+interface ethernet-1/{2..3}
+subinterface 17 
+type bridged
+vlan encap untagged
+exit to interface
+subinterface 0 
+type bridged
+vlan encap single-tagged vlan-id 17
+
+network-instance bridge-1
+type mac-vrf
+admin-state enable
+interface ethernet-1/1.16
+exit
+interface ethernet-1/2.17
+exit
+interface ethernet-1/3.17
+exit all
+
+commit stay
+commit save
+
+interface ibr1
+admin-state enable
+subinterface 1
+admin-state enable
+ipv4
+admin-state enable
+address 172.16.17.1/24
+exit all
+
+network-instance default
+interface irb0.0
+exit
+interface irb1.1
+```
