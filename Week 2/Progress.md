@@ -71,9 +71,14 @@ commit stay
 commit save
 ```
 ## Pinging the Two Clients
-After configuring Leaf1, I verified that the two clients can ping each other. The next step will be adding another client and setting up VLANs. One client will be on VLAN 10 and the other two will be on VLAN20.
+After configuring Leaf1, I verified that the two clients can ping each other. The next step will be adding another client and setting up VLANs. One client will be on VLAN 16 and the other two will be on VLAN17.
 
 <img width="465" height="217" alt="image" src="https://github.com/user-attachments/assets/094c6a26-65fd-4051-9161-7dd4e1b55b58" />
 
 ## Setting Up VLANs
+Before setting up the two VLANs, I need to modify the topology file to add `client3` into the network. To do this I will use nano to write to the file and then redeploy the lab with `sudo clab redeploy -t smalllab.clab.yaml`. Below you will see a diagram of the new network.
+
+<img width="284" height="275" alt="image" src="https://github.com/user-attachments/assets/e16cde15-ee6c-4af9-92dc-b234b473bf31" />
+
+
 
