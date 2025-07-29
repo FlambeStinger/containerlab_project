@@ -80,5 +80,9 @@ Before setting up the two VLANs, I need to modify the topology file to add `clie
 
 <img width="284" height="275" alt="image" src="https://github.com/user-attachments/assets/e16cde15-ee6c-4af9-92dc-b234b473bf31" />
 
+### Reconfiguring Client IP Addresses 
+Note to self, whenever you redeploy your container lab all of your devices are essentially wiped clean. Due to the addition of a new subnet, it helped a bit but it also cleared `leaf1` configurations. Anyways, I went through all three clients and configured their new IP addresses.
 
+<img width="706" height="550" alt="image" src="https://github.com/user-attachments/assets/a3cf0dae-15c0-4c50-8eea-534b93c3899f" />
 
+## Reconfiguring Leaf1
