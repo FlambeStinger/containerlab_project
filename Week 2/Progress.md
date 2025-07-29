@@ -42,7 +42,7 @@ Now to configure the IP address I need to know the name of the interface that I 
 <img width="722" height="312" alt="image" src="https://github.com/user-attachments/assets/a34777a3-5ee7-4e03-9549-b29d3d573697" />
 
 ## Configuring Leaf1
-To configure `leaf1` I SSHed and logged-in using the default credentials. Next I entered the configuration mode (called candidate)
+To configure `leaf1` I SSHed and logged-in using the default credentials. Next I entered the configuration mode (called candidate). From there I configured the interfaces to act as switch interfaces and saved my configurations.
 
 ```
 enter candidate
@@ -70,3 +70,10 @@ exit all
 commit stay
 commit save
 ```
+## Pinging the Two Clients
+After configuring Leaf1, I verified that the two clients can ping each other. The next step will be adding another client and setting up VLANs. One client will be on VLAN 10 and the other two will be on VLAN20.
+
+<img width="465" height="217" alt="image" src="https://github.com/user-attachments/assets/094c6a26-65fd-4051-9161-7dd4e1b55b58" />
+
+## Setting Up VLANs
+
