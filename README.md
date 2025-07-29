@@ -33,6 +33,7 @@ Following SR Linux's Lab, the lab will be a simple spine and leaf topology. All 
 ## Learning Resources:
 - Containerlab - running networking labs with Docker UX: https://www.youtube.com/watch?v=qigCla1qY3k
 - Containerlab: https://containerlab.dev/
+- SR Linux Documentation: https://documentation.nokia.com/srlinux/22-11/title/interfaces.html
 - SR Linux CLI: https://learn.srlinux.dev/get-started/cli/
 - SR Linux Lab: https://learn.srlinux.dev/get-started/lab/
 - SR Linux VLANs: https://learn.srlinux.dev/blog/2024/vlans-on-sr-linux/
