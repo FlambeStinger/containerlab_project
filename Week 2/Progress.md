@@ -168,4 +168,6 @@ commit save
 
 
 ```
-## Troubleshooting Intersubnet Routing
+## Troubleshooting Routing Between Subnets
+
+(Solution) Needed to set up static routes on the clients since they were sending traffic to their default gateway that's located on the mangament network.
