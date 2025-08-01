@@ -86,7 +86,7 @@ Note to self, whenever you redeploy your container lab all of your devices are e
 <img width="706" height="550" alt="image" src="https://github.com/user-attachments/assets/a3cf0dae-15c0-4c50-8eea-534b93c3899f" />
 
 ## Reconfiguring Leaf1
-Borrowing some of the configs from the original topolgy, I used Gemini and SRLinux's documentation to produce the configuration below. You may have noticed that I created two mac-vrf instances named `VLAN16` and `VLAN17`. Unlike Cisco IOS, SRLinux understands the concept of a mac-vrf. A mac-vrf is a network instance that creates a virtual swtich inside of the device. The mac-vrf will have its own mac-table and broadcast domain. This is the way to create VLANs and assign them to access ports unlike Cisco's `switchport access vlan X` command. 
+Borrowing some of the configs from the original topolgy, I used Gemini and SRLinux's documentation to produce the configuration below. You may have noticed that I created two mac-vrf instances named `VLAN16` and `VLAN17`. Unlike Cisco IOS, SRLinux utilizes the concept of a mac-vrf. A mac-vrf is a network instance that creates a virtual swtich inside of the device. The mac-vrf will have its own mac-table and broadcast domain. This is the equivalent of Cisco's way of setting up VLANs (i.e. creating the VLAN then applying it on an interface).
 
 ```
 enter candidate 
@@ -120,9 +120,6 @@ interface ethernet-1/2.17
 exit
 interface ethernet-1/3.17
 exit all
-
-commit stay
-commit save 
 
 interface irb0
 admin-state enable
@@ -165,9 +162,16 @@ address 10.10.10.1/32
 exit all
 
 commit save 
-
-
 ```
 ## Troubleshooting Routing Between Subnets
+Unfortuantely, clients on one subnet are unable to ping clients on the other subnet. However, they are able to ping all device within their subnet. You will find below two screenshot with the first one showing that clients are able to communicate with the SRLinux node in their subnet and the other one showing how clients are unable to communicate across subnets.
+
+<img width="707" height="737" alt="image" src="https://github.com/user-attachments/assets/33d72fcf-6013-477d-8961-a2749f567b49" />
+
+
+<img width="481" height="109" alt="image" src="https://github.com/user-attachments/assets/1c2d6a71-c8ef-4e03-9bef-4f5ee7ce14f1" />
+
+Given the issue, I first thought that I misconfigured the IRB interface and subinterfaces.
+
 
 (Solution) Needed to set up static routes on the clients since they were sending traffic to their default gateway that's located on the mangament network.
