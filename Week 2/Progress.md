@@ -86,7 +86,7 @@ Note to self, whenever you redeploy your container lab all of your devices are e
 <img width="706" height="550" alt="image" src="https://github.com/user-attachments/assets/a3cf0dae-15c0-4c50-8eea-534b93c3899f" />
 
 ## Reconfiguring Leaf1
-Borrowing some of the configs from the original topolgy, I used Gemini and SRLinux's documentation to produce the configuration below. You may have noticed that I created two mac-vrf instances named `VLAN16` and `VLAN17`. Unlike Cisco IOS, SRLinux utilizes the concept of a mac-vrf. A mac-vrf is a network instance that creates a virtual swtich inside of the device. The mac-vrf will have its own mac-table and broadcast domain. This is the equivalent of Cisco's way of setting up VLANs (i.e. creating the VLAN then applying it on an interface).
+Borrowing some of the configs from the original topolgy, I used Gemini and SRLinux's documentation to produce the configuration below. You may have noticed that I created two mac-vrf instances named `VLAN16` and `VLAN17`. Unlike Cisco IOS, SRLinux utilizes the concept of a mac-vrf. A mac-vrf is a network instance that creates a virtual swtich inside of the device. The mac-vrf will have its own mac-table and broadcast domain. This is the equivalent of Cisco's way of setting up VLANs (i.e. creating the VLAN then applying it on an interface). Two route between the two mac-vrf instances I had to create an Intergrated Routing and Bridging (IRB) interface.
 
 ```
 enter candidate 
@@ -171,7 +171,4 @@ Unfortuantely, clients on one subnet are unable to ping clients on the other sub
 
 <img width="481" height="109" alt="image" src="https://github.com/user-attachments/assets/1c2d6a71-c8ef-4e03-9bef-4f5ee7ce14f1" />
 
-Given the issue, I first thought that I misconfigured the IRB interface and subinterfaces.
-
-
-(Solution) Needed to set up static routes on the clients since they were sending traffic to their default gateway that's located on the mangament network.
+Given the issue, I thought that I misconfigured the IRB interface and subinterfaces on `leaf1`. After re-reading through documentation, using Gemini, and reviewing the running configuration, there was nothing wrong with the IRB interface. The next thing I did was checking the device's routing table to understand how the device was forwarding traffic, but its routes were configured correctly. Finally I decided to check on how the clients were sending its trafic and this is where I discovered the issue. All clients have three interfaces; one for management, one for loopback, and one for data traffic (the interface where I was sending the pings out of). With this in mind, each client also maintains its own routing table which tells the client where to send its packets depending on the destination IP address. I discovered that the client's default gateway resulted in packets being sent out of its management interface. Thus clients that don't have a route to the 172.16.16.0/24 or 172.16.17.0/24 network will send traffic out of its management interface in the 172.20.20.0/24 network. So the traffic never reaches `leaf1`. Fortuantely this is an easy fix, all I needed to do was create a static route to those networks based on the client. To do this on Linux I used the `ip route add [dest network]/[subnet mask] dev [interface]` command. Then I configured the static routes for the remaining clients. Once I finished, I tried pinging clients on the other subnet and was able to succesfully communicate with them! 
