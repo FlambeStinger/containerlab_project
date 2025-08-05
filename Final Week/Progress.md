@@ -33,4 +33,5 @@ name: lab1srl
     - endpoints: ["leaf1: e1-2", "client1: e1-1"]
     - endpoints: ["leaf2: e1-2", "client2: e1-1"]
 ```
+**Note to self' there cannot be any spaces between the node and it's interface or clab will not properly deploy it**
 ## Configuring the Leaves
