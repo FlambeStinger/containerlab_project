@@ -201,3 +201,86 @@ topology:
     - endpoints: ["leaf2:e1-3", "client2:e1-1"]
 
 ```
+```
+Leaf1 
+
+enter candidate 
+interface ethernet-1/{1..3}
+admin-state enable 
+vlan-tagging true 
+exit to root 
+
+interface ethernet-1/3
+subinterface 10
+admin-state enable 
+type bridged 
+vlan encap single-tagged vlan-id 10  
+exit to root 
+
+interface ethernet-1/2
+subinterface 20
+admin-state enable 
+type bridged 
+vlan encap single-tagged vlan-id 20 
+exit to root
+ 
+interface ethernet-1/1
+subinterface 0
+admin-state enable 
+type bridged 
+vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20
+exit to root 
+
+network-instance Bridge1 
+admin-state enable 
+type mac-vrf
+interface ethernet-1/1.0
+exit
+interface ethernet-1/2.20
+exit
+interface ethernet-1/3.10 
+exit to root 
+
+commit now 
+
+
+
+Leaf2
+
+enter candidate 
+interface ethernet-1/{1..3}
+admin-state enable 
+vlan-tagging true 
+exit to root 
+
+interface ethernet-1/3
+subinterface 20
+admin-state enable 
+type bridged 
+vlan encap single-tagged vlan-id 20
+exit to root 
+
+interface ethernet-1/2
+subinterface 10
+admin-state enable 
+type bridged 
+vlan encap single-tagged vlan-id 10 
+exit to root
+ 
+interface ethernet-1/1
+subinterface 0
+admin-state enable 
+type bridged 
+vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20
+exit to root 
+
+network-instance Bridge1 
+admin-state enable 
+type mac-vrf
+interface ethernet-1/1.0
+exit
+interface ethernet-1/2.10
+exit
+interface ethernet-1/3.20 
+exit to root
+```
