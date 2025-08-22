@@ -284,3 +284,69 @@ exit
 interface ethernet-1/3.20 
 exit to root
 ```
+## Troubleshooting the Issue
+To better isolate the problem with clients in leaf 1 being unable to send traffic to their respective clients in leaf 2 I decided that creating a topology with one leaf switch and two clients on sending VLAN 10 traffic will enable me to pinpoint if the problem is the client or the node. Additionally, it will allow me to see how SRLinux handels tagged traffic.
+
+## Designing the Topology
+For this topology `leaf` will connect to `client1` through its e1-1 interface and connect to `client2` through its e1-2 interface. `client1` will be assigned an IPv4 address of 10.10.10.10/24, and `client2` will be assigned 10.10.10.20/24. Both clients will be sending traffic tagged with VLAN10 to the `leaf`. 
+
+<img width="363" height="108" alt="image" src="https://github.com/user-attachments/assets/9e221dc8-46bd-4fb8-8c0f-6388544c4931" />
+
+## Setting Up the Topology
+I created a file named `demo_lab.clab.yaml` with `nano` and defined the node, two clients, and their links. Instead of reconfiguring the same attributes for the clients, I discovered in ContainerLab's documentation that you can create a group where you define its attributes and then assign nodes to a group. Nodes will recieve their attirbutes from the group they are assigned to, so this is very useful whenever I have to configure multiple identitcal nodes! 
+
+```
+name: demo_lab
+
+topology:
+ groups:
+  alpine-clients:
+   kind: linux
+   image: alpine
+ nodes:
+  leaf:
+   kind: nokia_srlinux
+   image: ghcr.io/nokia/srlinux
+  client1:
+   group: alpine-clients
+  client2:
+   group: alpine-clients
+
+ links:
+  - endpoints: ["leaf:e1-1", "client1:e1-1"]
+  - endpoints: ["leaf:e1-2", "client2:e1-1"]
+```
+
+## Configuring VLAN Interfaces on the Clients
+To begin VLAN configuration, I used `sudo docker exec -it clab-demo_lab-client1 /bin/sh` to access client's 1 shell. From there I listed its interfaces to verify that its e1-1 interface was properly deployed. Next, I issued the command 'ip link add link e1-1 name e1-1.10 type vlan id 10` to configure a subinterface that will send and recieve VLAN 10 traffic. After that, I issued `ip add add 10.10.10.10/24 dev e1-1.10` command to assign the VLAN 10 subinterface an IP address. Finally, I enabled the interface with `ip link set dev e1-1.10 up` and verfied that it was up. I performed the same process on `client2`. 
+<br><br>
+<img width="748" height="377" alt="image" src="https://github.com/user-attachments/assets/558006be-0fc8-4284-9418-3a7f9efb804d" />
+
+## Configuring the Leaf
+(Explain what and why Im making the configuration that I did)
+
+```
+enter candidate
+interface ethernet-1/{1..2}
+admin-state enable
+vlan-tagging true
+subinterface 10 
+admin-state enable
+type bridged 
+vlan encap single-tagged vlan-id 10 
+exit to root
+
+network-instance VLAN10
+admin-state enable
+type mac-vrf
+interface ethernet-1/1.10
+exit
+interface ethernet-1/2.10
+exit to root 
+commit now 
+```
+
+## Testing Connectivity
+After configure the `leaf` I wanted to verify that the clients can communicate with each other, so I accessed client1's shell and made it ping `client2`. Fortuantely, the clients were able to ping each other, so I know that my VLAN configuration on the clients were correct in the final_lab topology. Thus the problem must be with leaves. 
+
+<img width="556" height="196" alt="image" src="https://github.com/user-attachments/assets/d29cea96-c8cd-4092-90cc-9623519da4ff" />
