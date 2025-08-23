@@ -102,21 +102,27 @@ name: lab1srl
 ```
 
 ### Configuring Layer2 Interfaces
-SRLinux configuration method defers quite a bit from Cisco's way since many features must be specifically defined and applied on a per interface/subinterface level. This was slightly annoying at first, but I started to appreciate this level of granularity and control that it offered. SRLinux has three main modes: Running, State, and Candidate. The Running mode is the default mode a user is introduced to upon login. It's the equivalent to Cisco's enable mode, and you can't make configurations. State mode is very similar to Running mode but you can view a little more information: state information. Lastly, Candidate mode is the mode where you make configurations. To make configurations on the nodes, I used `enter candidate` to enter into Candidate mode. 
+SRLinux configuration method defers quite a bit from Cisco's way since many features must be specifically defined and applied on a per interface/subinterface level. This was slightly annoying at first, but I started to appreciate this level of granularity and control that it offered. SRLinux has three main modes: Running, State, and Candidate. The Running mode is the default mode a user is introduced to upon login. It's the equivalent to Cisco's enable mode, and you can't make configurations. State mode is very similar to Running mode but you can view a little more information: state information. Lastly, Candidate mode is the mode where you make configurations. To make configurations, I used `enter candidate` to enter into Candidate mode. This is also used for entering Running and State modes.
+
+In SRLinux, you must enable interfaces, subinterfaces, and network instances with the `admin-state enable` command. Without issuing this command, your configurations will not function. It's the equivalent to Cisco's `no shut` command for enabling interfaces. When configuring interfaces or subinterfaces, you must specify the type of interface it will be as it determines the available network instance type it can be assigned to. Because I'm configuring the nodes to act like switches, I want to issue the `type bridged` command to make them into switchports. 
+
+After configuring interfaces, you must create or assign them to a network-instance. There are 3 types of network instances: IP-VRF, MAC-VRF, and Default. A network instance with the IP-VRF type will create and maintain a routing table seperate from Default. It is a Layer-3 VRF and will have its own routes, routing protocol instances, and interfaces. A network instance with the MAC-VRF type will create and maintain a MAC-table. Using this vrf allows you to create and define the size of a broadcast domain by allowing you to assign interfaces to this instance. Finally, the Default network instance is a Layer-3 VRF that is the default vrf instance for the device. Below is a simple configuration for a SRLinux node. 
 
 ```
 enter candidate (Brings us to candidate mode; where configurations occur)
 interface ethernet-1/1 (The interface we want to configure)
 admin-state enable (this enables the interface))
-subinterface 10 (creates a subinterface ending in .10)
-type brideged (sets the link to be a bridge)
-admin-state enable (enables the .10 subinterface)
+subinterface 10 (creates a subinterface ending in e1-1.10)
+admin-state enable (enables the e1-1.10 subinterface)
+type bridged (sets the link to be a bridge)
 exit all (returns to root)
 
 network-instance layer-2 (this creates a vrf named layer-2)
 type mac-vrf (this sets the vrf to behave like a switch)
 admin-state enabled (this enables the instance)
 interface ethernet-1/1.10 (Adds the ethernet-1/1.10 interface to this vrf instance)
+exit to root
+commit now (Applies the configurations)
 ```
 ## Problems
 
