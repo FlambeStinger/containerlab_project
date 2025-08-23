@@ -34,7 +34,7 @@ name: lab1srl
 ## 1st Error
 <img width="956" height="113" alt="image" src="https://github.com/user-attachments/assets/0701e7c8-9190-47e8-a425-db99f2b36654" />
 
-It turns out that you can have multiple instances of a container network from the same topology file. I didn't realize this until I thought about veryifing the status of my network with `sudo containerlab inspect -a` :
+It turned out that you can have multiple instances of a container network from the same topology file. I didn't realize this until I thought about veryifing the status of my network with `sudo containerlab inspect -a` :
 
 <img width="908" height="248" alt="image" src="https://github.com/user-attachments/assets/1ccf8e9e-b007-40cf-b4f7-c28dc47d3014" />
 
@@ -49,7 +49,7 @@ Thinking that it would be an easy fix, I redeployed my lab using `sudo clab rede
 
 <img width="615" height="358" alt="image" src="https://github.com/user-attachments/assets/14780d28-3518-4724-8f4f-a55b54950fdb" />
 
-Obviously the problem is a networking problem, so I decided to take a look at my interfaces.
+Thinking that the problem was a networking problem, I decided to take a look at my interfaces.
 
 <img width="772" height="312" alt="image" src="https://github.com/user-attachments/assets/c504e6dc-d9af-4106-9663-e2d7815f8513" />
 
@@ -66,13 +66,13 @@ My theory was right! After deleting the duplicate bridge interface I was able to
 
 ## SRLinux Configuration
 
-For my first lab working with SRLinux I'm planning to create two VLANs (VLAN 10 and 20), place their endhosts on their respective VLANs, setup two trunk links between the leaves and spine switches, and configure `spine` to route between the two VLANs. Attached below is the topology detailing IP and VLAN assignment.
+For my first lab working with SRLinux, I planned to create a network with three nodes and two clients with each client connected to a leaf node. From there one client was assigned to VLAN 10 while the other was assigned to VLAN 20. Attached below is the topology detailing IP and VLAN assignment.
 
 <img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
 
 ### Adding Clients
 
-Before I start configuring the network, I need to add the client devices that I forgot to add when defining the topology. Similar to adding the SRLinux devices, I created and defined the connection, image, and kind for the two nodes `client1` and `client2`. My topology file ended up looking like this after I completed adding the clients.
+Before I started configuring the network, I needed to add the client devices that I forgot to add when defining the topology. Similar to adding the SRLinux devices, I created and defined the connection, image, and kind for the two nodes `client1` and `client2`. My topology file ended up looking like this after I was finished.
 
 ```
 name: lab1srl
