@@ -102,6 +102,7 @@ name: lab1srl
 ```
 
 ### Configuring Layer2 Interfaces
+SRLinux configuration method defers quite a bit from Cisco's way since many features must be specifically defined and applied on a per interface/subinterface level. This was slightly annoying at first, but I started to appreciate this level of granularity and control that it offered. SRLinux has three main modes: Running, State, and Candidate. The Running mode is the default mode a user is introduced to upon login. It's the equivalent to Cisco's enable mode, and you can't make configurations. State mode is very similar to Running mode but you can view a little more information: state information. Lastly, Candidate mode is the mode where you make configurations. To make configurations on the nodes, I used `enter candidate` to enter into Candidate mode. 
 
 ```
 enter candidate (Brings us to candidate mode; where configurations occur)
@@ -117,5 +118,6 @@ type mac-vrf (this sets the vrf to behave like a switch)
 admin-state enabled (this enables the instance)
 interface ethernet-1/1.10 (Adds the ethernet-1/1.10 interface to this vrf instance)
 ```
+## Problems
 
-### Configuring and Applying VLANs 
+## Shifting Gears
