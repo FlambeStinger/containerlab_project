@@ -78,10 +78,12 @@ The next step is to make the network slightly more complex. I decided to introdu
 </p>
 
 
-### Reconfiguring Client IP Addresses 
-Note to self, whenever you redeploy your container lab all of your devices are essentially wiped clean. Due to the addition of a new subnet, it helped a bit but it also cleared `leaf1` configurations. Anyways, I went through all three clients and configured their new IP addresses.
+### Reconfiguring Topology and Clients
+For the first step towards improving the lab, I was required to destroy the existing, running lab. ContainerLab makes this easy with its `destroy` command. To destroy a lab you must issue a flag, -t, then define the name of the lab. In my scenerio, the command looked like this: `sudo clab destroy -t smalllab.clab.yaml`. Once the lab was destroyed I used nano to configure the topology file and add in the new client. Lastly, I went through all three clients and configured their new IP addresses.
 
-<img width="706" height="550" alt="image" src="https://github.com/user-attachments/assets/a3cf0dae-15c0-4c50-8eea-534b93c3899f" />
+<p align="center">
+  <img width="706" height="550" alt="image" src="https://github.com/user-attachments/assets/a3cf0dae-15c0-4c50-8eea-534b93c3899f" />
+</p>
 
 ### Reconfiguring Leaf1
 Borrowing some of the configs from the original topolgy, I used Gemini and SRLinux's documentation to produce the configuration below. You may have noticed that I created two mac-vrf instances named `VLAN16` and `VLAN17`. Unlike Cisco IOS, SRLinux utilizes the concept of a mac-vrf. A mac-vrf is a network instance that creates a virtual swtich inside of the device. The mac-vrf will have its own mac-table and broadcast domain. This is the equivalent of Cisco's way of setting up VLANs (i.e. creating the VLAN then applying it on an interface). Two forward traffic between the two mac-vrf instances and route between the subnets I had to create an Intergrated Routing and Bridging (IRB) interface with two subinterfaces. An IRB interface is an interface that allows for inter-subnet forwarding. An ip-vrf and mac-vrf instances are required for proper IRB configuration. An IRB is the equivalent to a Switch Virtual Interface (SVI). 
@@ -92,10 +94,10 @@ Borrowing some of the configs from the original topolgy, I used Gemini and SRLin
 ### Troubleshooting Routing Between Subnets
 Unfortuantely, clients on one subnet are unable to ping clients on the other subnet. However, they are able to ping all device within their subnet. You will find below two screenshot with the first one showing that clients are able to communicate with the SRLinux node in their subnet and the other one showing how clients are unable to communicate across subnets.
 
+<p align="center">
 <img width="707" height="737" alt="image" src="https://github.com/user-attachments/assets/33d72fcf-6013-477d-8961-a2749f567b49" />
-
-
 <img width="481" height="109" alt="image" src="https://github.com/user-attachments/assets/1c2d6a71-c8ef-4e03-9bef-4f5ee7ce14f1" />
+</p>
 
 Given the issue, I thought that I misconfigured the IRB interface and subinterfaces on `leaf1`. After re-reading through documentation, using Gemini, and reviewing the running configuration, there was nothing wrong with the IRB interface. The next thing I did was checking the device's routing table to understand how the device was forwarding traffic, but its routes were configured correctly. Finally I decided to check on how the clients were sending its trafic and this is where I discovered the issue. 
 
@@ -103,5 +105,6 @@ All clients have three interfaces; one for management, one for loopback, and one
 
 Fortuantely this is an easy fix, all I needed to do was create a static route to those networks based on the client. To do this on Linux I used the `ip route add [dest network]/[subnet mask] via [gateway address]` command. Then I configured the static routes for the remaining clients. Once I finished, I tried pinging clients on the other subnet and was able to succesfully communicate with them! 
 
-<img width="698" height="466" alt="image" src="https://github.com/user-attachments/assets/d328d492-6676-4bd2-b2d5-2a244db73c18" />
-
+<p align="center">
+  <img width="698" height="466" alt="image" src="https://github.com/user-attachments/assets/d328d492-6676-4bd2-b2d5-2a244db73c18" />
+</p>
