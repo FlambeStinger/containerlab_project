@@ -136,6 +136,7 @@ Docker Command Breakdown
 
 From there I gained access to my container's shell where I will be configuring its IP Address. To configure an IP Address on a Linux-based system I used `ip address add [IPv4 Address]/[Subnetmask] dev [interface]`. So my configuration ended up being: `ip address add 10.10.10.10/27 dev e1-1` for client1 and `ip address add 10.10.20.20/27 dev e1-1` for client2. 
 
-## Problem
+## The Problem/s and Shifting Gears
+Upon completing all my configurations I immediately had client1 ping cilent2. Unfortuantely (and in retrospect unsurprising after completing the project) neither client was able to communuciate with each other. I tried reconfiguring the nodes and verifying that my configuartions were proper (which they weren't), but after spending a day troubleshooting I figured that starting off with a smaller and simpler lab will help me understand SRLinux better and where I made my mistakes.
 
-## Shifting Gears
+*Side Note: It turns out that there was a multitude of problems that were responsible for this issue, and over the next several weeks I slowly learned about these problems and how to fix them.*
