@@ -88,9 +88,6 @@ For the first step towards improving the lab, I was required to destroy the exis
 ### Reconfiguring Leaf1
 Borrowing some of the configs from the original topolgy, I used Gemini and SRLinux's documentation to produce the configuration below. You may have noticed that I created two mac-vrf instances named `VLAN16` and `VLAN17`. Unlike Cisco IOS, SRLinux utilizes the concept of a mac-vrf. A mac-vrf is a network instance that creates a virtual swtich inside of the device. The mac-vrf will have its own mac-table and broadcast domain. This is the equivalent of Cisco's way of setting up VLANs (i.e. creating the VLAN then applying it on an interface). Two forward traffic between the two mac-vrf instances and route between the subnets I had to create an Intergrated Routing and Bridging (IRB) interface with two subinterfaces. An IRB interface is an interface that allows for inter-subnet forwarding. An ip-vrf and mac-vrf instances are required for proper IRB configuration. An IRB is the equivalent to a Switch Virtual Interface (SVI). 
 
-(Explain how to configure an IRB interface)
-
-
 ### Troubleshooting Routing Between Subnets
 Unfortuantely, clients on one subnet are unable to ping clients on the other subnet. However, they are able to ping all device within their subnet. You will find below two screenshot with the first one showing that clients are able to communicate with the SRLinux node in their subnet and the other one showing how clients are unable to communicate across subnets.
 
