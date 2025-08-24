@@ -3,7 +3,12 @@
 Started following a video on setting up containerlab. Before watching through it, I configured a KVM running Ubuntu Server 24.04.2. Immediately upon start up I ran `sudo apt update` and `sudo apt upgrade`. Next, I installed the packages necessary for running containerlab. Fortunately both the video and containerlab's website provide a command to install it all: `curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"`
 
 ## Creating the Topology
-First I created a new directory called `clab-labs` then cd into `~/clab-labs`. Afterwards I created another directory named `clab-lab1srl` which is nested inside `clab-labs`. My thought process behind that is that each subdirectory under `clab-labs` will represent different containerlab projects. Regardless, after creating the subdirectory I created the topology file: `lab1.clab.yaml`. The `.clab.yaml` extension makes a file a topolgy file. Finally, I configured the topology file.
+For my first lab working with SRLinux, I planned to create a network with three nodes and two clients with each client connected to a leaf node. From there one client will be assigned to VLAN 10 while the other will be assigned to VLAN 20. Attached below is the topology detailing IP and VLAN assignment.
+
+<img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
+<br><br>
+
+Now to create this topology virtually, I created a directory called `clab-labs`, then I cd into it and created another directory called `clab-lab1srl`. My thought process for doing this is that each subdirectory under `clab-labs` will represent different containerlab projects, so it will keep my projects centeralized and organized. Anyways, after creating the subdirectory I created the topology file: `lab1.clab.yaml`. The `.clab.yaml` extension makes a file a topolgy file. Finally, I configured the topology file: 
 
 ```
 name: lab1srl
@@ -65,10 +70,6 @@ My theory was right! After deleting the duplicate bridge interface I was able to
 
 
 ## SRLinux Configuration
-
-For my first lab working with SRLinux, I planned to create a network with three nodes and two clients with each client connected to a leaf node. From there one client will be assigned to VLAN 10 while the other will be assigned to VLAN 20. Attached below is the topology detailing IP and VLAN assignment.
-
-<img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
 
 ### Adding Clients
 
