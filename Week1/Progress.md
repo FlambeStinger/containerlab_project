@@ -66,7 +66,7 @@ My theory was right! After deleting the duplicate bridge interface I was able to
 
 ## SRLinux Configuration
 
-For my first lab working with SRLinux, I planned to create a network with three nodes and two clients with each client connected to a leaf node. From there one client was assigned to VLAN 10 while the other was assigned to VLAN 20. Attached below is the topology detailing IP and VLAN assignment.
+For my first lab working with SRLinux, I planned to create a network with three nodes and two clients with each client connected to a leaf node. From there one client will be assigned to VLAN 10 while the other will be assigned to VLAN 20. Attached below is the topology detailing IP and VLAN assignment.
 
 <img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
 
@@ -106,7 +106,7 @@ SRLinux configuration method defers quite a bit from Cisco's way since many feat
 
 In SRLinux, you must enable interfaces, subinterfaces, and network instances with the `admin-state enable` command. Without issuing this command, your configurations will not function. It's the equivalent to Cisco's `no shut` command for enabling interfaces. When configuring interfaces or subinterfaces, you must specify the type of interface it will be as it determines the available network instance type it can be assigned to. Because I'm configuring the nodes to act like switches, I want to issue the `type bridged` command to make them into switchports. 
 
-After configuring interfaces, you must create or assign them to a network-instance. There are 3 types of network instances: IP-VRF, MAC-VRF, and Default. A network instance with the IP-VRF type will create and maintain a routing table seperate from Default. It is a Layer-3 VRF and will have its own routes, routing protocol instances, and interfaces. A network instance with the MAC-VRF type will create and maintain a MAC-table. Using this vrf allows you to create and define the size of a broadcast domain by allowing you to assign interfaces to this instance. Finally, the Default network instance is a Layer-3 VRF that is the default vrf instance for the device. Below there is a simple configuration for a SRLinux node. 
+After configuring interfaces, you must create or assign them to a network-instance. There are 3 types of network instances: IP-VRF, MAC-VRF, and Default. A network instance with the IP-VRF type will create and maintain a routing table seperate from Default. It is a Layer-3 VRF and will have its own routes, routing protocol instances, and interfaces. A network instance with the MAC-VRF type will create and maintain a MAC-table. Using this vrf allows you to create and define the size of a broadcast domain by allowing you to assign interfaces to this instance. Finally, the Default network instance is a Layer-3 VRF that is the default vrf instance for the device. Below there is a simple configuration for a SRLinux node. You will find the actual configurations for the nodes in the Week1 directory. 
 
 ```
 enter candidate (Brings us to candidate mode; where configurations occur)
@@ -124,6 +124,18 @@ interface ethernet-1/1.10 (Adds the ethernet-1/1.10 interface to this vrf instan
 exit to root
 commit now (Applies the configurations)
 ```
-## Problems
+## Configuring IP Addresses for the Clients
+Before veryifying that the clients can communicate with each other, they must be assigned their respective IP Address. To do so, I had to access the client containers using Docker. For those wondering Docker comes installed with ContainerLab as a dependency. Anyways to access my clients I issued `sudo docker exec -it [container name] /bin/sh`. Here's a quick breakdown on the command:
+
+Docker Command Breakdown
+
+    sudo: do this as superuser
+    docker: the program I'm calling
+    exec -it [name of container]: execute a process in this container, create a virtual TTY interface (-t), and display the results of my input (-i)
+    /bin/sh: execute the shell (the process)
+
+From there I gained access to my container's shell where I will be configuring its IP Address. To configure an IP Address on a Linux-based system I used `ip address add [IPv4 Address]/[Subnetmask] dev [interface]`. So my configuration ended up being: `ip address add 10.10.10.10/27 dev e1-1` for client1 and `ip address add 10.10.20.20/27 dev e1-1` for client2. 
+
+## Problem
 
 ## Shifting Gears
