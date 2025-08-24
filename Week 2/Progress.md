@@ -27,12 +27,14 @@ topology:
     - endpoints: ["leaf1: e1-1", "client1: e1-1"]
     - endpoints: ["leaf1: e1-2", "client2: e1-1"]
 ```
-## Setting Static IPs for Clients
-To begin setting static IPs inside the clients, I used the command `sudo docker exec -it [name of container] /bin/sh` to access my containers. From there I configured the clients' IP Address with `ip addr add 172.16.16.[client]/24 dev e1-1` and verified proper configuration with `ip add`: 
+### Setting Static IPs for Clients
+I used the command `sudo docker exec -it [name of container] /bin/sh` to access my containers. From there I configured the clients' IP Address with `ip addr add 172.16.16.[client]/24 dev e1-1` and verified proper configuration with `ip add`: 
 
+<p align="center">
 <img width="722" height="312" alt="image" src="https://github.com/user-attachments/assets/a34777a3-5ee7-4e03-9549-b29d3d573697" />
+</p>
 
-## Configuring Leaf1
+### Configuring Leaf1
 To configure `leaf1` I SSHed and logged-in using the default credentials. Next I entered the configuration mode (called candidate). From there I configured the interfaces to act as switch interfaces and saved my configurations.
 
 ```
@@ -61,28 +63,32 @@ exit all
 commit stay
 commit save
 ```
-## Pinging the Two Clients
-After configuring Leaf1, I verified that the two clients can ping each other. The next step will be adding another client and setting up VLANs. One client will be on VLAN 16 and the other two will be on VLAN17.
+### Pinging the Two Clients
+After configuring Leaf1, I verified that the two clients can ping each other.
+<p align=center>
+  <img width="465" height="217" alt="image" src="https://github.com/user-attachments/assets/094c6a26-65fd-4051-9161-7dd4e1b55b58" />
+</p>
 
-<img width="465" height="217" alt="image" src="https://github.com/user-attachments/assets/094c6a26-65fd-4051-9161-7dd4e1b55b58" />
+## Improving the Topology
+The next step is to make the network slightly more complex. I decided to introduce a third client, `client3`, and two VLANs, VLAN16 and VLAN 17. Client 1 will be asisgned to VLAN 16 while Client 2 and 3 will be assigned to VLAN 17. VLAN 16 will be associated to the 172.16.16.0/24 network, and VLAN 17 will be associted to the 172.16.17.0/24 network. 
 
-## Setting Up VLANs
-Before setting up the two VLANs, I need to modify the topology file to add `client3` into the network. To do this I will use nano to write to the file and then redeploy the lab with `sudo clab redeploy -t smalllab.clab.yaml`. Below you will see a diagram of the new network.
+<p align="center">
+  <img width="284" height="275" alt="image" src="https://github.com/user-attachments/assets/e16cde15-ee6c-4af9-92dc-b234b473bf31" />
+</p>
 
-<img width="284" height="275" alt="image" src="https://github.com/user-attachments/assets/e16cde15-ee6c-4af9-92dc-b234b473bf31" />
 
 ### Reconfiguring Client IP Addresses 
 Note to self, whenever you redeploy your container lab all of your devices are essentially wiped clean. Due to the addition of a new subnet, it helped a bit but it also cleared `leaf1` configurations. Anyways, I went through all three clients and configured their new IP addresses.
 
 <img width="706" height="550" alt="image" src="https://github.com/user-attachments/assets/a3cf0dae-15c0-4c50-8eea-534b93c3899f" />
 
-## Reconfiguring Leaf1
+### Reconfiguring Leaf1
 Borrowing some of the configs from the original topolgy, I used Gemini and SRLinux's documentation to produce the configuration below. You may have noticed that I created two mac-vrf instances named `VLAN16` and `VLAN17`. Unlike Cisco IOS, SRLinux utilizes the concept of a mac-vrf. A mac-vrf is a network instance that creates a virtual swtich inside of the device. The mac-vrf will have its own mac-table and broadcast domain. This is the equivalent of Cisco's way of setting up VLANs (i.e. creating the VLAN then applying it on an interface). Two forward traffic between the two mac-vrf instances and route between the subnets I had to create an Intergrated Routing and Bridging (IRB) interface with two subinterfaces. An IRB interface is an interface that allows for inter-subnet forwarding. An ip-vrf and mac-vrf instances are required for proper IRB configuration. An IRB is the equivalent to a Switch Virtual Interface (SVI). 
 
 (Explain how to configure an IRB interface)
 
 
-## Troubleshooting Routing Between Subnets
+### Troubleshooting Routing Between Subnets
 Unfortuantely, clients on one subnet are unable to ping clients on the other subnet. However, they are able to ping all device within their subnet. You will find below two screenshot with the first one showing that clients are able to communicate with the SRLinux node in their subnet and the other one showing how clients are unable to communicate across subnets.
 
 <img width="707" height="737" alt="image" src="https://github.com/user-attachments/assets/33d72fcf-6013-477d-8961-a2749f567b49" />
