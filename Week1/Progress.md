@@ -1,6 +1,6 @@
 # Week 1 Progress #
 ## Setup
-Started following a video on setting up containerlab. Before watching through it, I configured a KVM running Ubuntu Server 24.04.2. Immediately upon start up I ran `sudo apt update` and `sudo apt upgrade`. Next, I installed the packages necessary for running containerlab. Fortunately both the video and containerlab's website provide a command to install it all: `curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"`
+For setup I started following a video for setting up ContainerLab. But before that, I configured a KVM running Ubuntu Server 24.04.2. Immediately on start up I ran `sudo apt update` and `sudo apt upgrade`. Next, I installed the packages necessary for running ContainerLab using this command: `curl -sL https://containerlab.dev/setup | sudo -E bash -s "all"`
 
 ## Creating the Topology
 For my first lab working with SRLinux, I planned to create a network with three nodes and two clients with each client connected to a leaf node. From there one client will be assigned to VLAN 10 while the other will be assigned to VLAN 20. Attached below is the topology detailing IP and VLAN assignment.
