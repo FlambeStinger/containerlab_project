@@ -5,8 +5,9 @@ For setup I started following a video for setting up ContainerLab. But before th
 ## Creating the Topology
 For my first lab working with SRLinux, I planned to create a network with three nodes and two clients with each client connected to a leaf node. From there one client will be assigned to VLAN 10 while the other will be assigned to VLAN 20. Attached below is the topology detailing IP and VLAN assignment.
 
-<img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
-<br><br>
+<p align="center">
+  <img width="379" height="363" alt="image" src="https://github.com/user-attachments/assets/3045eae2-b3c0-4440-9453-83a02bf491b3" />
+</p>
 
 Now to create this topology virtually, I created a directory called `clab-labs`, then I cd into it and created another directory called `clab-lab1srl`. My thought process for doing this is that each subdirectory under `clab-labs` will represent different containerlab projects, so it will keep my projects centeralized and organized. Anyways, after creating the subdirectory I created the topology file: `lab1.clab.yaml`. The `.clab.yaml` extension makes a file a topolgy file. Finally, I configured the topology file: 
 
@@ -35,6 +36,8 @@ name: lab1srl
 - **Kind** : Defines the type of NOS/OS clab can expect
 - **Image** : Defines the container image that will be pulled and used
 - **Endpoints** : Defines how nodes will be connected
+
+After defining the topology, the next thing I needed to do was deploy it. To deploy it, I used `sudo clab deploy -t lab1.clab.yaml`. 
 
 ## 1st Error
 <img width="956" height="113" alt="image" src="https://github.com/user-attachments/assets/0701e7c8-9190-47e8-a425-db99f2b36654" />
