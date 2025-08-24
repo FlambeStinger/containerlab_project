@@ -2,7 +2,7 @@
 Starting a newer and simpler lab
 
 ## A New Topology
-For a few days I've been struggling with getting the clients to successful communicate with each other in the original topology. Though they aren't on the same VLAN and SVIs aren't configured, I expected to see nodes learn the mac addresses of the clients when they attempt to ping each other. However, I didn't see this when looking through the nodes' mac address tables. This is concerning since this means that the nodes aren't properly configured as bridged (switch) interfaces or the clients aren't sending frames over their virtual interface. To better isolate the problem and understand SRLinux, I decided to set up a simpler topology with 1 SRLinux node and 2 client containers running Alpine. In this simpler network, there will be one node and two clients connected to the node. Both clients will belong to the 172.16.16.0/24 network and they will be assigned to the default VLAN. Here is a visual of the network and its configuration file:
+For a few days I've been struggling with getting the clients to successful communicate with each other in the original topology. Though they aren't on the same VLAN and SVIs aren't configured, I expected to see nodes learn the mac addresses of the clients when they attempt to ping each other. However, I didn't see this when looking through the nodes' mac address tables. This is concerning since this means that the nodes aren't properly configured as bridged (switch) interfaces or the clients aren't sending frames over their virtual interface. To better isolate the problem and understand SRLinux, I decided to set up a simpler topology with 1 SRLinux node and 2 client containers running Alpine. In this simpler network, there will be one node and two clients connected to the node. Both clients will belong to the 172.16.16.0/24 network and they will be assigned to the default VLAN. Here is a visual of the network and its configuration file.
 
 <p align="center">
 <img width="286" height="317" alt="image" src="https://github.com/user-attachments/assets/ef90c9f8-4c9b-4871-a4a9-c1042c5f251f" />
@@ -28,14 +28,14 @@ topology:
     - endpoints: ["leaf1: e1-2", "client2: e1-1"]
 ```
 ### Setting Static IPs for Clients
-I used the command `sudo docker exec -it [name of container] /bin/sh` to access my containers. From there I configured the clients' IP Address with `ip addr add 172.16.16.[client]/24 dev e1-1` and verified proper configuration with `ip add`: 
+I used the command `sudo docker exec -it [name of container] /bin/sh` to access my containers. From there I configured the clients' IP Address with `ip addr add 172.16.16.[client]/24 dev e1-1` and verified proper configuration with `ip add`
 
 <p align="center">
 <img width="722" height="312" alt="image" src="https://github.com/user-attachments/assets/a34777a3-5ee7-4e03-9549-b29d3d573697" />
 </p>
 
 ### Configuring Leaf1
-To configure `leaf1` I SSHed and logged-in using the default credentials. Next I entered the configuration mode (called candidate). From there I configured the interfaces to act as switch interfaces and saved my configurations.
+Since Leaf1 will be acting as a switch, I knew that I needed to configure its interfaces to act like switchports. To do so, I entered into Candidate mode, then I selected the interface I wanted to configure (ethernet-1/1 and ethernet-1/2) and enabled it. Next, I created a subinterface and enabled it. Recall that in SRLinux, the majority of configurations must be enabled with the `admin-state enable` command. After enabling the subinterface, I configured it to act like a switchport by setting it as `type bridged`. Finally, I created a mac-vrf network instance called layer2 and assigned the subinterfaces to it. Doing this allowed the node to forward Layer 2 frames from and between the interfaces. This was what my configurations ended up looking.
 
 ```
 enter candidate
@@ -63,8 +63,9 @@ exit all
 commit stay
 commit save
 ```
+
 ### Pinging the Two Clients
-After configuring Leaf1, I verified that the two clients can ping each other.
+After configuring Leaf1, I verified that the two clients can ping each other. And from the image below, the two clients were able to successfully communicate with each other! 
 <p align=center>
   <img width="465" height="217" alt="image" src="https://github.com/user-attachments/assets/094c6a26-65fd-4051-9161-7dd4e1b55b58" />
 </p>
