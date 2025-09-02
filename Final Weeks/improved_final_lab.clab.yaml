@@ -1,0 +1,29 @@
+name: final_lab
+
+topology:
+ groups:
+  leaves:
+   kind: nokia_srlinux
+   image: ghcr.io/nokia/srlinux
+  alpine-clients:
+   kind: linux
+   image: alpine
+ nodes:
+  leaf1:
+    group: leaves
+  leaf2:
+    group: leave
+  client1:
+    group: alpine-clients
+  client2:
+    group: alpine-clients
+  client3:
+    group: alpine-clients
+  client4:
+    group: alpine-clients
+ links:
+    - endpoints: ["leaf1:e1-1", "leaf2:e1-1"]
+    - endpoints: ["leaf1:e1-2", "client4:e1-1"]
+    - endpoints: ["leaf1:e1-3", "client1:e1-1"]
+    - endpoints: ["leaf2:e1-2", "client3:e1-1"]
+    - endpoints: ["leaf2:e1-3", "client2:e1-1"]
