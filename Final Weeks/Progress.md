@@ -42,90 +42,6 @@ topology:
     - endpoints: ["leaf2:e1-3", "client2:e1-1"]
 
 ```
-```
-Leaf1 
-
-enter candidate 
-interface ethernet-1/{1..3}
-admin-state enable 
-vlan-tagging true 
-exit to root 
-
-interface ethernet-1/3
-subinterface 10
-admin-state enable 
-type bridged 
-vlan encap single-tagged vlan-id 10  
-exit to root 
-
-interface ethernet-1/2
-subinterface 20
-admin-state enable 
-type bridged 
-vlan encap single-tagged vlan-id 20 
-exit to root
- 
-interface ethernet-1/1
-subinterface 0
-admin-state enable 
-type bridged 
-vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20
-exit to root 
-
-network-instance Bridge1 
-admin-state enable 
-type mac-vrf
-interface ethernet-1/1.0
-exit
-interface ethernet-1/2.20
-exit
-interface ethernet-1/3.10 
-exit to root 
-
-commit now 
-
-
-
-Leaf2
-
-enter candidate 
-interface ethernet-1/{1..3}
-admin-state enable 
-vlan-tagging true 
-exit to root 
-
-interface ethernet-1/3
-subinterface 20
-admin-state enable 
-type bridged 
-vlan encap single-tagged vlan-id 20
-exit to root 
-
-interface ethernet-1/2
-subinterface 10
-admin-state enable 
-type bridged 
-vlan encap single-tagged vlan-id 10 
-exit to root
- 
-interface ethernet-1/1
-subinterface 0
-admin-state enable 
-type bridged 
-vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20
-exit to root 
-
-network-instance Bridge1 
-admin-state enable 
-type mac-vrf
-interface ethernet-1/1.0
-exit
-interface ethernet-1/2.10
-exit
-interface ethernet-1/3.20 
-exit to root
-commit now
-```
 ## Troubleshooting Detour
 After making my configurations, I tested the clients' connectivtiy, and like Week 1, clients were unable to send traffic to their peers on the same VLAN. Upon inspection of `leaf1's` and `leaf2's` MAC Address Table, the leaves were learning the sending client's MAC address connected to them but none of the ARP Requests were being forwarded out of leaves' tagged interface. Additionally, the interface was only transmitting traffic, thus this strongly indicated that the problem must be the leaves' tagged interface. 
 
@@ -148,4 +64,4 @@ After making my configurations, I tested the clients' connectivtiy, and like Wee
 </p>
 
 ### Correcting the Misconfigured Tagged Interface
-It turned out that it is unecessary to issue `vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20` on the interfaces connecting the leaves together. When re-reading through SR Linux's documentation, I realized that the intent of this command was for connecting to servers with multiple hosts on seperate VLANs. When I removed the command from both interfaces and disabled their vlan tagging, clients on both VLANs (10 and 20) were able to communicate with their peers! I don't know if this techincally maked the interfaces a tagged interface nor why `vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20`  prevented tagged traffic from being sent over, but I suspect that the way you implement this in a data center enviroment differs greatly from that of a campus. Luckily, this provides me with an opportunity to investigate and learn more! 
+It turned out that it was unecessary to issue `vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20` on the interfaces connecting the leaves together. When re-reading through SR Linux's documentation, I realized that the intent of this command was for connecting to servers with multiple hosts on seperate VLANs. When I removed the command from both interfaces and disabled their vlan tagging, clients on both VLANs (10 and 20) were able to communicate with their peers! I don't know if the intefaces are tagged interfaces anymore. Nor do I know why `vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20`  prevented tagged traffic from being sent over, but I suspect that the way you implement this in a data center enviroment differs greatly from that of a campus. Luckily, this provides me with an opportunity to investigate and learn more! 
