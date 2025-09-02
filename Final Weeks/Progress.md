@@ -68,3 +68,30 @@ It turned out that it was unecessary to issue `vlan encap single-tagged-range lo
 
 ## Making Small Improvements
 Despite the project being completed, there were a few things that I wanted to improve upon. For starters, after creating several topology file, it became very repetitious configuring the same attributes for nodes and clients of the same type. For example, if I wanted to create a very large network, say 20 nodes and 40 clients, it would take a while to set the attributes for all devices. Thus, I needed to look for a more scalable solution. After reading through Container Lab's User Manual, I discovered that there is a way to pass attritbutes to devices at a large scale. In fact, there are four degrees of inheritance from most specific to least specific. Starting with the most specific, attributes configured at the `Node` level will be local only to that node. So, no other node will inherit the attributes of a configured node. The next degree of inheritance is confgured at the `Group` level. This is the level that I decided to utilize. At the `Group` level, attirbutes such as type, image, and kind can be described for group that the user defined. From there, each node can be assigned to a group where they can inherit their attributes. The `Kinds` level is very similar to the `Group` level but more general. Finally, the `Defaults` level is the least specific degree of inheritance. It defines attributes at a global level, thus all devices will be configured with attirbutes at the `Default` level unless superseded by `Group` or by `Node`. 
+
+#### Example Demostration Using Groups
+```
+name: example_lab
+
+topology:
+ groups:
+  leaves:
+   kind: nokia_srlinux
+   image: ghcr.io/nokia/srlinux
+  alpine-clients:
+   kind: linux
+   image: alpine
+ nodes:
+  leaf1:
+    group: leaves
+  leaf2:
+    group: leave
+  client1:
+    group: alpine-clients
+  client2:
+    group: alpine-clients
+ links:
+    - endpoints: ["leaf1:e1-1", "leaf2:e1-1"]
+    - endpoints: ["leaf1:e1-2", "client1:e1-1"]
+    - endpoints: ["leaf2:e1-2", "client2:e1-1"]
+```
