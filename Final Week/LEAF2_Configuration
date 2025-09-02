@@ -28,7 +28,7 @@ exit to root
 network-instance Bridge
 admin-state enable 
 type mac-vrf
-interface ethernet-1/1.1
+interface ethernet-1/1.10
 exit
 interface ethernet-1/2.10
 exit
