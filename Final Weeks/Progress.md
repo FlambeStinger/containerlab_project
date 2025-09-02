@@ -124,10 +124,27 @@ interface ethernet-1/2.10
 exit
 interface ethernet-1/3.20 
 exit to root
+commit now
 ```
 ## Troubleshooting Detour
-After making my configurations, I tested the clients' connectivtiy, and like Week 1, clients were unable to send traffic to their peers on the same VLAN. Upon inspection of `leaf1's` and `leaf2's` MAC Address Table, the leaves were learning the sending client's MAC address connected to them but none of the ARP Requests were being forwarded out of leaves' trunking interface. Additionally, the interface was transmitting and recieving traffic, thus this indicated that the problem must be with the tagging configuration. 
+After making my configurations, I tested the clients' connectivtiy, and like Week 1, clients were unable to send traffic to their peers on the same VLAN. Upon inspection of `leaf1's` and `leaf2's` MAC Address Table, the leaves were learning the sending client's MAC address connected to them but none of the ARP Requests were being forwarded out of leaves' tagged interface. Additionally, the interface was only transmitting traffic, thus this strongly indicated that the problem must be the leaves' tagged interface. 
 
-(Show screenshots of the leaves' MAC Address Table)
+#### Clients Unable to Communicate
+<p>
+  <img width="490" height="165" alt="image" src="https://github.com/user-attachments/assets/8e88228c-0884-44ad-81d7-b55e7ca27f77" />
+  <img width="490" height="184" alt="image" src="https://github.com/user-attachments/assets/122ea45a-2005-4a4a-949d-08548cc9e16d" />
+</p>
+
+#### Leaf 1 and Leaf 2 MAC Tables
+<p>
+  <img width="915" height="400" alt="image" src="https://github.com/user-attachments/assets/2df36987-767b-4a84-9c05-7ddd05686e1e" />
+  <img width="915" height="400" alt="image" src="https://github.com/user-attachments/assets/ff1c9958-9e85-4c1a-8b74-272f6e874f55" />
+</p>
+
+#### Leaf 1 and Leaf 2 E1-1 Details
+<p>
+  <img width="343" height="655" alt="image" src="https://github.com/user-attachments/assets/11b67d95-99d5-4d12-8fcd-3e9c7abde37a" />
+  <img width="343" height="655" alt="image" src="https://github.com/user-attachments/assets/ccd6a0a3-2bbd-48cc-afd7-35f227198b97" />
+</p>
 
 ### Misconfiguring the Trunk/Tagged Interface
