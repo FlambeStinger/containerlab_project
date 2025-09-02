@@ -147,4 +147,5 @@ After making my configurations, I tested the clients' connectivtiy, and like Wee
   <img width="343" height="655" alt="image" src="https://github.com/user-attachments/assets/ccd6a0a3-2bbd-48cc-afd7-35f227198b97" />
 </p>
 
-### Misconfiguring the Trunk/Tagged Interface
+### Correcting the Misconfigured Tagged Interface
+It turned out that it is unecessary to issue `vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20` on the interfaces connecting the leaves together. When re-reading through SR Linux's documentation, I realized that the intent of this command was for connecting to servers with multiple hosts on seperate VLANs. When I removed the command from both interfaces and disabled their vlan tagging, clients on both VLANs (10 and 20) were able to communicate with their peers! I don't know if this techincally maked the interfaces a tagged interface nor why `vlan encap single-tagged-range low-vlan-id 10 high-vlan-id 20`  prevented tagged traffic from being sent over, but I suspect that the way you implement this in a data center enviroment differs greatly from that of a campus. Luckily, this provides me with an opportunity to investigate and learn more! 
