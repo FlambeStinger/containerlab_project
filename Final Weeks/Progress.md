@@ -116,7 +116,7 @@ topology:
   leaf1:
     group: leaves
   leaf2:
-    group: leave
+    group: leaves
   client1:
     group: alpine-clients
     exec:
