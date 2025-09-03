@@ -12,15 +12,31 @@ topology:
   leaf1:
     group: leaves
   leaf2:
-    group: leave
+    group: leaves
   client1:
     group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.10 type vlan id 10
+     - ip add add 10.10.10.11/27 dev e1-1.10
+     - ip link set dev e1-1.10 up
   client2:
     group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.20 type vlan id 20
+     - ip add add 10.10.20.12/27 dev e1-1.20
+     - ip link set dev e1-1.20 up
   client3:
     group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.10 type vlan id 10
+     - ip add add 10.10.10.13/27 dev e1-1.10
+     - ip link set dev e1-1.10 up
   client4:
     group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.20 type vlan id 20
+     - ip add add 10.10.20.14/27 dev e1-1.20
+     - ip link set dev e1-1.20 up
  links:
     - endpoints: ["leaf1:e1-1", "leaf2:e1-1"]
     - endpoints: ["leaf1:e1-2", "client4:e1-1"]
