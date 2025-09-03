@@ -21,4 +21,4 @@ I found plenty of enjoyment working through this project! In regards to my objec
 
 Of course this tool does have its draw backs. Firstly, there are a limited amount of containerized network operating systems that can be deployed, some require license while others do not. This is somewhat alleviated by tool's ability to work intendem with systems running on virtual machines, but I cannot speak to how well it works since I haven't experimented with it. Another potential drawback is performance. I imagine that a virtualized network device does not perform nearly as well as a physical one nor will it be able to handel as much traffic, but I may be wrong about that.
 
-All in all, this project was very succesful, and I'll be using the knownledge and experience I gained to create a lab for myself to learn new tools and skills. 
+All in all, this project was very succesful, and I'll be using the knownledge and experience I gained to create a lab for myself to learn new tools and skills!
