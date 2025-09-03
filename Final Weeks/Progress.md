@@ -97,3 +97,31 @@ topology:
     - endpoints: ["leaf1:e1-2", "client1:e1-1"]
     - endpoints: ["leaf2:e1-2", "client2:e1-1"]
 ```
+#### Automating Clients' Network Configuration
+Another thing that I wanted to improve was the process for assigning clients their IP addresses. The current process was pasting the client's configuration from a text file on my host. This did make the process slightly more tolerable than retyping the configurations for each client, but I knew that a better solution was out there. Like before, after digging around Container Lab's User Manual, I learned about the `exec` attribute. This attribute can be assigned to node, and commands that a user specified will be executed under this attribute. I assigned each client an exec attribute under their node attribute and pasted the commands for each client from my text file. 
+
+```
+name: example_lab
+
+topology:
+ groups:
+  leaves:
+   kind: nokia_srlinux
+   image: ghcr.io/nokia/srlinux
+  alpine-clients:
+   kind: linux
+   image: alpine
+ nodes:
+  leaf1:
+    group: leaves
+  leaf2:
+    group: leave
+  client1:
+    group: alpine-clients
+  client2:
+    group: alpine-clients
+ links:
+    - endpoints: ["leaf1:e1-1", "leaf2:e1-1"]
+    - endpoints: ["leaf1:e1-2", "client1:e1-1"]
+    - endpoints: ["leaf2:e1-2", "client2:e1-1"]
+```
