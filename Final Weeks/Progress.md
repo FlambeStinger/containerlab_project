@@ -148,3 +148,7 @@ topology:
     - endpoints: ["leaf2:e1-2", "client3:e1-1"]
     - endpoints: ["leaf2:e1-3", "client2:e1-1"]
 ```
+#### Result of Configuration
+<p align=center>
+  <img width="747" height="218" alt="image" src="https://github.com/user-attachments/assets/66935534-e4cb-40ee-b963-cb5ad002a636" />
+</p>
