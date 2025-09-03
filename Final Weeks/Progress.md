@@ -100,8 +100,9 @@ topology:
 #### Automating Clients' Network Configuration
 Another thing that I wanted to improve was the process for assigning clients their IP addresses. The current process was pasting the client's configuration from a text file on my host. This did make the process slightly more tolerable than retyping the configurations for each client, but I knew that a better solution was out there. Like before, after digging around Container Lab's User Manual, I learned about the `exec` attribute. This attribute can be assigned to node, and commands that a user specified will be executed under this attribute. I assigned each client an exec attribute under their node attribute and pasted the commands for each client from my text file. 
 
+#### Automated Client IP Assigment
 ```
-name: example_lab
+name: final_lab
 
 topology:
  groups:
@@ -118,10 +119,32 @@ topology:
     group: leave
   client1:
     group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.10 type vlan id 10
+     - ip add add 10.10.10.11/27 dev e1-1.10
+     - ip link set dev e1-1.10 up
   client2:
     group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.20 type vlan id 20
+     - ip add add 10.10.20.12/27 dev e1-1.20
+     - ip link set dev e1-1.20 up
+  client3:
+    group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.10 type vlan id 10
+     - ip add add 10.10.10.13/27 dev e1-1.10
+     - ip link set dev e1-1.10 up
+  client4:
+    group: alpine-clients
+    exec:
+     - ip link add link e1-1 name e1-1.20 type vlan id 20
+     - ip add add 10.10.20.14/27 dev e1-1.20
+     - ip link set dev e1-1.20 up
  links:
     - endpoints: ["leaf1:e1-1", "leaf2:e1-1"]
-    - endpoints: ["leaf1:e1-2", "client1:e1-1"]
-    - endpoints: ["leaf2:e1-2", "client2:e1-1"]
+    - endpoints: ["leaf1:e1-2", "client4:e1-1"]
+    - endpoints: ["leaf1:e1-3", "client1:e1-1"]
+    - endpoints: ["leaf2:e1-2", "client3:e1-1"]
+    - endpoints: ["leaf2:e1-3", "client2:e1-1"]
 ```
