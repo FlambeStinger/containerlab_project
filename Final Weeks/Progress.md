@@ -2,7 +2,7 @@
 Modifying Week 1's lab and applying what I learned
 
 ## Modifying the Topology
-Unfortuantely it took me a while to realize this, but my current topology is not adequate for setting up and testing tagged traffic across a LAN. The reason behind this has to due with the fact that each leaf only had one client, and each client belonged to a seperate VLAN. Thus to fix this I removed `spine1`, connected `leaf1` and `leaf2` together, and added an additional client to each leaf node. Additionally, on each leaf, one client was assigned to VLAN 10 and the other to VLAN 20. Clients were assigned static IP addresses, and intervlan routing was not configured since that was out of scope of this lab's objective.
+Unfortuantely it took me a while to realize this, but my current topology was not adequate for setting up and testing tagged traffic across a LAN. The reason behind this had to due with the fact that each leaf only had one client, and each client belonged to a seperate VLAN. Thus to fix this I removed `spine1`, connected `leaf1` and `leaf2` together, and added an additional client to each leaf node. Additionally, on each leaf, one client was assigned to VLAN 10 and the other to VLAN 20. Clients were assigned static IP addresses, and intervlan routing was not configured since that was out of scope of this lab's objective.
 <br></br>
 
 <p align="center">
